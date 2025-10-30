@@ -1,0 +1,18 @@
+name: Lint JavaScript Code
+
+on: [push, pull_request]
+
+jobs:
+  lint-js:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Biome
+        run: npm install --global @biomejs/biome
+      - name: Lint ProgramCode.js
+        run: biome check $GITHUB_WORKSPACE/ProgramCode.js
