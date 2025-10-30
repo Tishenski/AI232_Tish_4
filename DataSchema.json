@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/lovetemp-poetry.schema.json",
+  "title": "LoveTempPoetry",
+  "description": "Ієрархічна схема даних для програмного продукту: емоційний стан → поезія, медитація, здоров’я, температура",
+  "type": "object",
+  "properties": {
+    "user": {
+      "type": "object",
+      "description": "Основний користувач системи",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Унікальний ідентифікатор користувача"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100,
+          "pattern": "^[A-Za-zА-Яа-я\\s]+$",
+          "description": "Повне ім'я користувача, без цифр або символів"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Електронна пошта для авторизації"
+        }
+      },
+      "required": ["user_id", "name", "email"]
+    },
+    "emotion_state": {
+      "type": "object",
+      "description": "Поточний емоційний стан користувача",
+      "properties": {
+        "state_text": {
+          "type": "string",
+          "enum": [
+            "втрачена любов",
+            "холод, втома",
+            "спокій",
+            "тривога",
+            "самотність"
+          ],
+          "description": "Текстовий опис емоційного стану"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Час встановлення стану"
+        },
+        "user_id": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Зовнішній ключ до користувача"
+        }
+      },
+      "required": ["state_text", "timestamp", "user_id"]
+    },
+    "poem_recommendation": {
+      "type": "object",
+      "description": "Рекомендована система поезія",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Назва вірша"
+        },
+        "author": {
+          "type": "string",
+          "minLength": 2,
+          "pattern": "^[A-ZА-Я][a-zа-я]+ [A-ZА-Я]\\.[A-ZА-Я]?$",
+          "description": "Автор у форматі 'Прізвище І.М.'"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Текст вірша"
+        },
+        "emotion_tag": {
+          "type": "string",
+          "enum": ["любов", "втрата", "надія", "болю", "внутрішній мир"],
+          "description": "Емоційна категорія поезії"
+        }
+      },
+      "required": ["title", "author", "text", "emotion_tag"]
+    },
+    "meditation_session": {
+      "type": "object",
+      "description": "Дані про медитацію",
+      "properties": {
+        "duration_sec": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 600,
+          "description": "Тривалість медитації в секундах (1–10 хвилин)"
+        },
+        "audio_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Посилання на аудіофайл медитації"
+        },
+        "trigger_state": {
+          "type": "string",
+          "description": "Стан, що запускає медитацію",
+          "enum": ["втрачена любов", "холод, втома", "самотність"]
+        }
+      },
+      "required": ["duration_sec", "audio_url", "trigger_state"]
+    },
+    "health_data": {
+      "type": "object",
+      "description": "Дані про фізичне здоров’я користувача",
+      "properties": {
+        "body_temperature": {
+          "type": "number",
+          "minimum": 35.0,
+          "maximum": 42.0,
+          "description": "Температура тіла в °C"
+        },
+        "activity_level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Рівень активності (1–5)"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user_id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": ["body_temperature", "activity_level", "timestamp", "user_id"]
+    },
+    "thermostat_config": {
+      "type": "object",
+      "description": "Налаштування термостата на основі стану користувача",
+      "properties": {
+        "target_temp_c": {
+          "type": "integer",
+          "minimum": 18,
+          "maximum": 26,
+          "description": "Цільова температура навколишнього середовища (°C)"
+        },
+        "room_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50,
+          "description": "Назва кімнати (напр., спальня)"
+        },
+        "user_id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": ["target_temp_c", "room_name", "user_id"]
+    }
+  },
+  "required": ["user", "emotion_state", "poem_recommendation", "meditation_session"]
+}
