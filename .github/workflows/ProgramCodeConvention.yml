@@ -15,4 +15,4 @@ jobs:
       - name: Install Biome
         run: npm install --global @biomejs/biome
       - name: Lint ProgramCode.js
-        run: biome check $GITHUB_WORKSPACE/ProgramCode.js
+        run: biome check $GITHUB_WORKSPACE/ProgramCodeModified.js
